@@ -14,7 +14,6 @@ class joueur
         bool jeter(UNO& u,int indice,joueur& j);
         void verif_uno(UNO u);
         int calcule_score();
-        bool fin();
         int nbr_de_cartes();
         bool joueur_automatique(UNO& u,joueur& j);
         carte distribuer(UNO& u,joueur& j);
