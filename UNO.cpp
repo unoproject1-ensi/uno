@@ -45,6 +45,11 @@ void UNO::nouvelle_tour()
     c=vjeter[vjeter.size()-1];
     vjeter.erase(vjeter.begin()+vjeter.size()-1);
     vuno.swap(vjeter);
+    for(int i=0;i<vuno.size();i++)
+    {
+        if((vuno[i].donner_symbole()=="joker")||(vuno[i].donner_symbole()=="+4"))
+            vuno[i].modifier_couleur("noir");
+    }
     vjeter.push_back(c);
 }
 UNO::~UNO()
