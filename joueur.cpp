@@ -418,7 +418,7 @@ carte joueur::distribuer(UNO& u,joueur& j)
     r=rand()%(u.vuno.size());
     u.vjeter.push_back(u.vuno[r]);
     c=u.vuno[r];
-    u.vuno.erase(u.vuno.begin()+r-1);
+    u.vuno.erase(u.vuno.begin()+r);
     affiche(u,j);
     if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")
     {
@@ -455,7 +455,7 @@ vector<carte> joueur::piocher(UNO& u,int nbr)
         r=rand()%(u.vuno.size());
         v.push_back(u.vuno[r]);
         vect.push_back(u.vuno[r]);
-        u.vuno.erase(u.vuno.begin()+r-1);
+        u.vuno.erase(u.vuno.begin()+r);
     }
     return vect;
 }
@@ -494,7 +494,7 @@ bool joueur::jeter(UNO& u,int indice,joueur& j)
     }
     else if(v[indice-1].donner_symbole()=="+4")
     {
-        if((chercher_couleur(u.vjeter[n-1].donner_couleur()).size()==0)&&(chercher_symbole(u.vjeter[n-1].donner_symbole()).size()==0)&&(chercher_symbole("joker").size()==0))
+        if(((chercher_couleur(u.vjeter[n-1].donner_couleur()).size()==0)&&(chercher_symbole(u.vjeter[n-1].donner_symbole()).size()==0)&&(chercher_symbole("joker").size()==0))||((u.vjeter[n-1].donner_symbole()=="+4")&&(chercher_couleur(u.vjeter[n-1].donner_couleur()).size()==0)&&(chercher_symbole("joker").size()==0)))
         {
             string coul;
             while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
