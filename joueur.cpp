@@ -401,7 +401,7 @@ void joueur::affiche(UNO u,joueur j)
     cout<<endl<<endl<<endl<<endl;
     cout<<"\t\t\t\t\t("<<u.vjeter[u.vjeter.size()-1].donner_couleur()<<","<<u.vjeter[u.vjeter.size()-1].donner_symbole()<<")"<<endl<<endl<<endl<<endl;
     for(int i=0;i<v.size();i++)
-        cout<<"("<<v[i].donner_couleur()<<","<<v[i].donner_symbole()<<")   ";
+        cout<<i+1<<": ("<<v[i].donner_couleur()<<","<<v[i].donner_symbole()<<")   ";
     cout<<endl<<endl<<endl<<endl;
 }
 carte joueur::distribuer(UNO& u,joueur& j)
