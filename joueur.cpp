@@ -495,13 +495,7 @@ int joueur::calcule_score()
         score=score+v[i].donner_valeur();
     return score;
 }
-bool joueur::fin()
-{
-    if (v.size()==0)
-        return true;
-    else
-        return false;
-}
+
 bool joueur::joueur_automatique(UNO& u,joueur& j)
 {
     vector<int> vcoul=chercher_couleur(u.derniere_carte().donner_couleur());
