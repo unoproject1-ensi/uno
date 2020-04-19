@@ -134,7 +134,7 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
     {
         string ch;
         vector<carte> v;
-        cout<<"                                        Le joueur 2 est en train de jouer"<<endl<<endl<<endl;
+        cout<<"\t\t\t\t\tLe joueur 2 est en train de jouer"<<endl<<endl<<endl;
         t3=false;
         if(((c.donner_symbole()!="+4")&&(c.donner_symbole()!="+2")&&(c.donner_symbole()!="inverse")&&(c.donner_symbole()!="block"))||(debut==false))
         {
@@ -369,7 +369,7 @@ void joueur::affiche(UNO u,joueur j)
     for(int i=0;i<j.v.size();i++)
         cout<<"(*,*)   ";
     cout<<endl<<endl<<endl<<endl;
-    cout<<"                                           ("<<u.vjeter[u.vjeter.size()-1].donner_couleur()<<","<<u.vjeter[u.vjeter.size()-1].donner_symbole()<<")"<<endl<<endl<<endl<<endl;
+    cout<<"\t\t\t\t\t("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl<<endl<<endl<<endl;
     for(int i=0;i<v.size();i++)
         cout<<"("<<v[i].donner_couleur()<<","<<v[i].donner_symbole()<<")   ";
     cout<<endl<<endl<<endl<<endl;
@@ -398,9 +398,9 @@ carte joueur::distribuer(UNO& u,joueur& j)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);
+        u.derniere_carte().modifier_couleur(coul);
     }
-    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")
+    else if(u.dernier_carte().donner_symbole()=="+4")
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -408,10 +408,10 @@ carte joueur::distribuer(UNO& u,joueur& j)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);
+        u.derniere_carte().modifier_couleur(coul);
         j.piocher(u,4);
     }
-    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")
+    else if(u.derniere_carte().donner_symbole()=="+2")
         j.piocher(u,2);
     return c;
 }
@@ -495,7 +495,13 @@ int joueur::calcule_score()
         score=score+v[i].donner_valeur();
     return score;
 }
-
+bool joueur::fin()
+{
+    if (v.size()==0)
+        return true;
+    else
+        return false;
+}
 bool joueur::joueur_automatique(UNO& u,joueur& j)
 {
     vector<int> vcoul=chercher_couleur(u.vjeter[u.vjeter.size()-1].donner_couleur());
