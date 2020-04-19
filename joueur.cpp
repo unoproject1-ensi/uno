@@ -16,7 +16,7 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
     u.nouvelle_partie();
     c=distribuer(u,j);
     system("cls");
-    while((fin()==false)&&(j.fin()==false))
+    while((nbr_de_cartes()!=0)&&(j.nbr_de_cartes()!=0))
     {
         string ch;
         bool t,t1,t2;
