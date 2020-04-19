@@ -390,7 +390,7 @@ carte joueur::distribuer(UNO& u,joueur& j)
     c=u.vuno[r];
     u.vuno.erase(u.vuno.begin()+r-1);
     affiche(u,j);
-    if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")
+    if(u.derniere_carte().donner_symbole()=="joker")
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -464,7 +464,7 @@ bool joueur::jeter(UNO& u,int indice,joueur& j)
     }
     else if(v[indice-1].donner_symbole()=="+4")
     {
-        if((chercher_couleur(u.vjeter[n-1].donner_couleur()).size()==0)&&(chercher_symbole(u.vjeter[n-1].donner_symbole()).size()==0)&&(chercher_symbole("joker").size()==0))
+        if((chercher_couleur(u.derniere_carte().donner_couleur()).size()==0)&&(chercher_symbole(u.derniere_carte().donner_symbole()).size()==0)&&(chercher_symbole("joker").size()==0))
         {
             string coul;
             while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -479,13 +479,13 @@ bool joueur::jeter(UNO& u,int indice,joueur& j)
             test=true;
         }
     }
-    else if ((u.vjeter[n-1].donner_couleur()==v[indice-1].donner_couleur())||(u.vjeter[n-1].donner_symbole()==v[indice-1].donner_symbole()))
+    else if ((u.derniere_carte().donner_couleur()==v[indice-1].donner_couleur())||(u.derniere_carte().donner_symbole()==v[indice-1].donner_symbole()))
     {
         u.vjeter.push_back(v[indice-1]);
         v.erase(v.begin()+indice-1);
         test=true;
     }
-    if((u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")&&(test==true))
+    if((u.derniere_carte().donner_symbole()=="+2")&&(test==true))
         j.piocher(u,2);
     return test;
 }
@@ -504,8 +504,8 @@ bool joueur::fin()
 }
 bool joueur::joueur_automatique(UNO& u,joueur& j)
 {
-    vector<int> vcoul=chercher_couleur(u.vjeter[u.vjeter.size()-1].donner_couleur());
-    vector<int> vsym=chercher_symbole(u.vjeter[u.vjeter.size()-1].donner_symbole());
+    vector<int> vcoul=chercher_couleur(u.derniere_carte().donner_couleur());
+    vector<int> vsym=chercher_symbole(u.derniere_carte().donner_symbole());
     bool test=false;
     int n=u.vjeter.size();
     if(vcoul.size()!=0)
@@ -528,7 +528,7 @@ bool joueur::joueur_automatique(UNO& u,joueur& j)
     {
         piocher(u,1);
         cout<<"Le joueur 2 a pioche une carte"<<endl<<endl<<endl<<endl;
-        if((v[v.size()-1].donner_couleur()==u.vjeter[u.vjeter.size()-1].donner_couleur())||(v[v.size()-1].donner_symbole()==u.vjeter[u.vjeter.size()-1].donner_symbole())||(v[v.size()-1].donner_couleur()=="noir"))
+        if((v[v.size()-1].donner_couleur()==u.derniere_carte().donner_couleur())||(v[v.size()-1].donner_symbole()==u.derniere_carte().donner_symbole())||(v[v.size()-1].donner_couleur()=="noir"))
         {
             u.vjeter.push_back(v[v.size()-1]);
             v.erase(v.begin()+v.size()-1);
@@ -537,7 +537,7 @@ bool joueur::joueur_automatique(UNO& u,joueur& j)
     if(u.vjeter.size()==n+1)
     {
         test=true;
-        if((u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")||(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4"))
+        if((u.derniere_carte().donner_symbole()=="joker")||(u.derniere_carte().donner_symbole()=="+4"))
         {
             int a=chercher_couleur("rouge").size();
             int b=chercher_couleur("bleu").size();
@@ -545,15 +545,15 @@ bool joueur::joueur_automatique(UNO& u,joueur& j)
             int d=chercher_couleur("vert").size();
             int liste[]={a,b,c,d};
             if(*(max_element(liste,liste+4))==a)
-                u.vjeter[u.vjeter.size()-1].modifier_couleur("rouge");
+                u.derniere_carte().modifier_couleur("rouge");
             if(*(max_element(liste,liste+4))==b)
-                u.vjeter[u.vjeter.size()-1].modifier_couleur("bleu");
+                u.derniere_carte().modifier_couleur("bleu");
             if(*(max_element(liste,liste+4))==c)
-                u.vjeter[u.vjeter.size()-1].modifier_couleur("jaune");
+                u.derniere_carte().modifier_couleur("jaune");
             if(*(max_element(liste,liste+4))==d)
-                u.vjeter[u.vjeter.size()-1].modifier_couleur("vert");
+                u.derniere_carte().modifier_couleur("vert");
         }
-        if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")
+        if(u.derniere_carte().donner_symbole()=="+4")
             j.piocher(u,4);
     }
     return(test);
