@@ -30,8 +30,8 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
                 if(u.vuno.size()==0)
                     u.nouvelle_tour();
             }
-            while((bloque(u)==true)&&(t2==true)&&(j.fin()==false));
-        if(j.fin()==false)
+            while((bloque(u)==true)&&(t2==true)&&(j.nbr_de_cartes()!=0));
+        if(j.nbr_de_cartes()!=0)
         {
             do
             {
@@ -55,8 +55,13 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
                     cout<<"Vous avez piocher cette carte : ("<<v[v.size()-1].donner_couleur()<<","<<v[v.size()-1].donner_symbole()<<")"<<endl;
                     t=jeter(u,nbr_de_cartes(),j);
                     verif_uno(u);
-                    cin>>ch;
                     t1=true;
+                    do
+                    {
+                        cout<<"Ecrivez fin pour continuer a jouer"<<endl;
+                        cin>>ch;
+                    }
+                    while((ch!="fin")&&(ch!="FIN"));
                 }
                 else
                 {
@@ -88,7 +93,12 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
                                 t=jeter(u,nbr_de_cartes(),j);
                                 verif_uno(u);
                                 t1=true;
-                                cin>>ch;
+                                do
+                                {
+                                    cout<<"Ecrivez fin pour continuer a jouer"<<endl;
+                                    cin>>ch;
+                                }
+                                while((ch!="fin")&&(ch!="FIN"));
                             }
                         }
                         while((t==false)&&(t1==false));
@@ -100,12 +110,12 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
                 system("cls");
                 debut=false;
             }
-            while((j.bloque(u)==true)&&(t==true)&&(fin()==false));
+            while((j.bloque(u)==true)&&(t==true)&&(nbr_de_cartes()!=0));
         }
     }
-    if(fin()==true)
+    if(nbr_de_cartes()==0)
         cout<<"Vous etes gagnant"<<endl;
-    if(j.fin()==true)
+    if(j.nbr_de_cartes()==0)
         cout<<"Vous etes perdant"<<endl;
     cout<<"Votre score est : "<<calcule_score()<<endl;
     cout<<"Le score du joueur 2 est : "<<j.calcule_score()<<endl;
@@ -130,7 +140,7 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
     u.nouvelle_partie();
     c=distribuer(u,j);
     system("cls");
-    while((fin()==false)&&(j.fin()==false))
+    while((nbr_de_cartes()!=0)&&(j.nbr_de_cartes()!=0))
     {
         string ch;
         vector<carte> v;
@@ -161,8 +171,13 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
                     if(t2==true)
                         v2.push_back(u.derniere_carte());
                     j.verif_uno(u);
-                    cin>>ch;
                     t3=true;
+                    do
+                    {
+                        cout<<"Ecrivez fin pour continuer a jouer"<<endl;
+                        cin>>ch;
+                    }
+                    while((ch!="fin")&&(ch!="FIN"));
                 }
                 else
                 {
@@ -198,7 +213,12 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
                                     v2.push_back(u.derniere_carte());
                                 j.verif_uno(u);
                                 t3=true;
-                                cin>>ch;
+                                do
+                                {
+                                    cout<<"Ecrivez fin pour continuer a jouer"<<endl;
+                                    cin>>ch;
+                                }
+                                while((ch!="fin")&&(ch!="FIN"));
                             }
                         }
                         while((t2==false)&&(t3==false));
@@ -209,7 +229,7 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
                     u.nouvelle_tour();
                 system("cls");
             }
-            while((j.bloque(u)==true)&&(t2==true)&&(fin()==false));
+            while((bloque(u)==true)&&(t2==true)&&(j.nbr_de_cartes()!=0));
         }
         else
         {
@@ -221,7 +241,7 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
             while((ch!="daccord")&&(ch!="DACCORD"));
             system("cls");
         }
-        if(j.fin()==false)
+        if(j.nbr_de_cartes()!=0)
         {
             do
             {
@@ -230,7 +250,7 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
             }
             while((ch!="oui")&&(ch!="OUI"));
             system("cls");
-            cout<<"                                        Le joueur 1 est en train de jouer"<<endl<<endl<<endl;
+            cout<<"\t\t\t\t\tLe joueur 1 est en train de jouer"<<endl<<endl<<endl;
             do
             {
                 t=false;
@@ -259,7 +279,12 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
                         v1.push_back(u.derniere_carte());
                     verif_uno(u);
                     t1=true;
-                    cin>>ch;
+                    do
+                    {
+                        cout<<"Ecrivez fin pour continuer a jouer"<<endl;
+                        cin>>ch;
+                    }
+                    while((ch!="fin")&&(ch!="FIN"));
                 }
                 else
                 {
@@ -295,7 +320,12 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
                                     v1.push_back(u.derniere_carte());
                                 verif_uno(u);
                                 t1=true;
-                                cin>>ch;
+                                do
+                                {
+                                    cout<<"Ecrivez fin pour continuer a jouer"<<endl;
+                                    cin>>ch;
+                                }
+                                while((ch!="fin")&&(ch!="FIN"));
                             }
                         }
                         while((t==false)&&(t1==false));
@@ -307,7 +337,7 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
                 system("cls");
                 debut=false;
             }
-            while((j.bloque(u)==true)&&(t==true)&&(fin()==false));
+            while((j.bloque(u)==true)&&(t==true)&&(nbr_de_cartes()!=0));
             do
             {
                 cout<<"Vous etes pret ? "<<endl;
@@ -317,9 +347,9 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int nbr)
             system("cls");
         }
     }
-    if(fin()==true)
+    if(nbr_de_cartes()==0)
         cout<<"Le joueur 1 a gagne"<<endl;
-    if(j.fin()==true)
+    if(j.nbr_de_cartes()==0)
         cout<<"Le joueur 2 a gagne"<<endl;
     cout<<"Votre score est : "<<calcule_score()<<endl;
     cout<<"Le score du joueur 2 est : "<<j.calcule_score()<<endl;
@@ -369,7 +399,7 @@ void joueur::affiche(UNO u,joueur j)
     for(int i=0;i<j.v.size();i++)
         cout<<"(*,*)   ";
     cout<<endl<<endl<<endl<<endl;
-    cout<<"\t\t\t\t\t("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl<<endl<<endl<<endl;
+    cout<<"\t\t\t\t\t("<<u.vjeter[u.vjeter.size()-1].donner_couleur()<<","<<u.vjeter[u.vjeter.size()-1].donner_symbole()<<")"<<endl<<endl<<endl<<endl;
     for(int i=0;i<v.size();i++)
         cout<<"("<<v[i].donner_couleur()<<","<<v[i].donner_symbole()<<")   ";
     cout<<endl<<endl<<endl<<endl;
@@ -390,7 +420,7 @@ carte joueur::distribuer(UNO& u,joueur& j)
     c=u.vuno[r];
     u.vuno.erase(u.vuno.begin()+r-1);
     affiche(u,j);
-    if(u.derniere_carte().donner_symbole()=="joker")
+    if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -398,9 +428,9 @@ carte joueur::distribuer(UNO& u,joueur& j)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.derniere_carte().modifier_couleur(coul);
+        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);
     }
-    else if(u.dernier_carte().donner_symbole()=="+4")
+    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -408,10 +438,10 @@ carte joueur::distribuer(UNO& u,joueur& j)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.derniere_carte().modifier_couleur(coul);
+        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);
         j.piocher(u,4);
     }
-    else if(u.derniere_carte().donner_symbole()=="+2")
+    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")
         j.piocher(u,2);
     return c;
 }
@@ -464,7 +494,7 @@ bool joueur::jeter(UNO& u,int indice,joueur& j)
     }
     else if(v[indice-1].donner_symbole()=="+4")
     {
-        if((chercher_couleur(u.derniere_carte().donner_couleur()).size()==0)&&(chercher_symbole(u.derniere_carte().donner_symbole()).size()==0)&&(chercher_symbole("joker").size()==0))
+        if((chercher_couleur(u.vjeter[n-1].donner_couleur()).size()==0)&&(chercher_symbole(u.vjeter[n-1].donner_symbole()).size()==0)&&(chercher_symbole("joker").size()==0))
         {
             string coul;
             while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -479,13 +509,13 @@ bool joueur::jeter(UNO& u,int indice,joueur& j)
             test=true;
         }
     }
-    else if ((u.derniere_carte().donner_couleur()==v[indice-1].donner_couleur())||(u.derniere_carte().donner_symbole()==v[indice-1].donner_symbole()))
+    else if ((u.vjeter[n-1].donner_couleur()==v[indice-1].donner_couleur())||(u.vjeter[n-1].donner_symbole()==v[indice-1].donner_symbole()))
     {
         u.vjeter.push_back(v[indice-1]);
         v.erase(v.begin()+indice-1);
         test=true;
     }
-    if((u.derniere_carte().donner_symbole()=="+2")&&(test==true))
+    if((u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")&&(test==true))
         j.piocher(u,2);
     return test;
 }
@@ -495,11 +525,10 @@ int joueur::calcule_score()
         score=score+v[i].donner_valeur();
     return score;
 }
-
 bool joueur::joueur_automatique(UNO& u,joueur& j)
 {
-    vector<int> vcoul=chercher_couleur(u.derniere_carte().donner_couleur());
-    vector<int> vsym=chercher_symbole(u.derniere_carte().donner_symbole());
+    vector<int> vcoul=chercher_couleur(u.vjeter[u.vjeter.size()-1].donner_couleur());
+    vector<int> vsym=chercher_symbole(u.vjeter[u.vjeter.size()-1].donner_symbole());
     bool test=false;
     int n=u.vjeter.size();
     if(vcoul.size()!=0)
@@ -522,7 +551,7 @@ bool joueur::joueur_automatique(UNO& u,joueur& j)
     {
         piocher(u,1);
         cout<<"Le joueur 2 a pioche une carte"<<endl<<endl<<endl<<endl;
-        if((v[v.size()-1].donner_couleur()==u.derniere_carte().donner_couleur())||(v[v.size()-1].donner_symbole()==u.derniere_carte().donner_symbole())||(v[v.size()-1].donner_couleur()=="noir"))
+        if((v[v.size()-1].donner_couleur()==u.vjeter[u.vjeter.size()-1].donner_couleur())||(v[v.size()-1].donner_symbole()==u.vjeter[u.vjeter.size()-1].donner_symbole())||(v[v.size()-1].donner_couleur()=="noir"))
         {
             u.vjeter.push_back(v[v.size()-1]);
             v.erase(v.begin()+v.size()-1);
@@ -531,7 +560,7 @@ bool joueur::joueur_automatique(UNO& u,joueur& j)
     if(u.vjeter.size()==n+1)
     {
         test=true;
-        if((u.derniere_carte().donner_symbole()=="joker")||(u.derniere_carte().donner_symbole()=="+4"))
+        if((u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")||(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4"))
         {
             int a=chercher_couleur("rouge").size();
             int b=chercher_couleur("bleu").size();
@@ -539,15 +568,15 @@ bool joueur::joueur_automatique(UNO& u,joueur& j)
             int d=chercher_couleur("vert").size();
             int liste[]={a,b,c,d};
             if(*(max_element(liste,liste+4))==a)
-                u.derniere_carte().modifier_couleur("rouge");
+                u.vjeter[u.vjeter.size()-1].modifier_couleur("rouge");
             if(*(max_element(liste,liste+4))==b)
-                u.derniere_carte().modifier_couleur("bleu");
+                u.vjeter[u.vjeter.size()-1].modifier_couleur("bleu");
             if(*(max_element(liste,liste+4))==c)
-                u.derniere_carte().modifier_couleur("jaune");
+                u.vjeter[u.vjeter.size()-1].modifier_couleur("jaune");
             if(*(max_element(liste,liste+4))==d)
-                u.derniere_carte().modifier_couleur("vert");
+                u.vjeter[u.vjeter.size()-1].modifier_couleur("vert");
         }
-        if(u.derniere_carte().donner_symbole()=="+4")
+        if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")
             j.piocher(u,4);
     }
     return(test);
