@@ -23,7 +23,7 @@ class joueur
         void jouer_a_deux(UNO& u,joueur& j,int n);
         vector<int> chercher_couleur(string coul);
         vector<int> chercher_symbole(string sym);
-    protected:
+    private:
         int score;
         vector<carte> v;
 };
