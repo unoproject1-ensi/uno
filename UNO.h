@@ -11,7 +11,7 @@ class UNO
         void nouvelle_partie();
         carte derniere_carte();
         friend class joueur;
-    protected:
+    private:
         vector<carte> vjeter;
         vector<carte> vuno;
 };
