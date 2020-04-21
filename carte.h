@@ -13,7 +13,7 @@ class carte
         string donner_couleur();
         string donner_symbole();
         void modifier_couleur(string coul);
-    protected:
+    private:
         string couleur;
         string symbole;
         int valeur;
