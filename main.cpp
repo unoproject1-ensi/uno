@@ -106,6 +106,18 @@ int main()
         if((*(max_element(liste,liste+4))==s2)||(*(max_element(liste,liste+4))==s4))
             cout<<"L'equipe 2 a gagne la partie"<<endl;
     }
+    else if(n==5)
+    {
+        int s1=j1.calcule_score();
+        int s2=j2.calcule_score();
+        int s3=j3.calcule_score();
+        int s4=j4.calcule_score();
+        int liste[]={s1,s2,s3,s4};
+        if((*(max_element(liste,liste+4))==s1)||(*(max_element(liste,liste+4))==s3))
+            cout<<"L'equipe 1 a gagne la partie"<<endl;
+        if((*(max_element(liste,liste+4))==s2)||(*(max_element(liste,liste+4))==s4))
+            cout<<"L'equipe 2 a gagne la partie"<<endl;
+    }
     do
     {
         cout<<"Ecrivez quitter pour fermer le jeu"<<endl;
