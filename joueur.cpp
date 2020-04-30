@@ -267,6 +267,8 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int& nbr)
         else
         {
             remove("f2.txt");
+            v1.clear();
+            v2.clear();
             u.nouvelle_partie();
             c=distribuer_a_deux(u,j);
             i=1;
@@ -874,7 +876,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
     int i;
     vector<carte> v1;
     vector<bool> vb;
-    ifstream fich("f.txt");
+    ifstream fich("f4.txt");
     if(fich.fail())
     {
         u.nouvelle_partie();
@@ -1196,7 +1198,7 @@ void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
     string ch;
     int i;
     vector<carte> v1;
-    ifstream fich("f.txt");
+    ifstream fich("f4.txt");
     if(fich.fail())
     {
         u.nouvelle_partie();
