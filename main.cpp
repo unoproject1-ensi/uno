@@ -61,7 +61,7 @@ int main()
             }
             while((ch!="oui")&&(ch!="OUI")&&(ch!="non")&&(ch!="NON"));
         }
-        remove("f.txt");
+       
     }
     while((((ch=="oui")||(ch=="OUI")))||(nbr_de_parties<2));
     if(n==1)
@@ -118,6 +118,10 @@ int main()
         if((*(max_element(liste,liste+4))==s2)||(*(max_element(liste,liste+4))==s4))
             cout<<"L'equipe 2 a gagne la partie"<<endl;
     }
+    if ((n==1) || (n==2))
+      remove("f2.text");
+    else
+      remove("f4.text");
     do
     {
         cout<<"Ecrivez quitter pour fermer le jeu"<<endl;
