@@ -5,7 +5,7 @@
 using namespace std;
 UNO::UNO()
 {
-    position=1;
+    
 }
 bool UNO::fin_de_cartes()
 {
