@@ -13,7 +13,7 @@ class UNO
         bool fin_de_cartes();
         friend class joueur;
         friend ostream& operator<<(ostream& s,UNO& u);
-    protected:
+    private:
         vector<carte> vjeter;
         vector<carte> vuno;
         
