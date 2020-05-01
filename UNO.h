@@ -16,6 +16,6 @@ class UNO
     protected:
         vector<carte> vjeter;
         vector<carte> vuno;
-        int position;
+        
 };
 #endif // UNO_H
