@@ -1603,12 +1603,12 @@ carte joueur::distribuer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);
-        j1.piocher(u,4);
+        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);//modifier la carte selon la couleur choisie
+        j1.piocher(u,4);//le joueur suivant pioche les quatre cartes
     }
-    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")
+    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")//si la 1ere carte +2 le joueur suivant pioche deux cartes
         j1.piocher(u,2);
-    return c;
+    return c;//retourner la premiere carte jetée
 }
 vector<carte> joueur::piocher(UNO& u,int nbr)
 {
@@ -1618,13 +1618,13 @@ vector<carte> joueur::piocher(UNO& u,int nbr)
     {
         srand(time(0));
         r=rand()%(u.vuno.size());
-        v.push_back(u.vuno[r]);
+        v.push_back(u.vuno[r]);//piocher une carte d'une position aléatoire
         vect.push_back(u.vuno[r]);
-        u.vuno.erase(u.vuno.begin()+r);
+        u.vuno.erase(u.vuno.begin()+r);//effacer cette cartes de l'ensemble des cartes à piochées(vuno)
     }
-    return vect;
+    return vect;//retourner un vecteur qui contient la carte piochée
 }
-vector<int> joueur::chercher_couleur(string coul)
+vector<int> joueur::chercher_couleur(string coul)//retourne un vecteur qui contient les positions des cartes ayant le même couleur
 {
     vector<int> vect;
     for(int i=0;i<v.size();i++)
@@ -1632,7 +1632,7 @@ vector<int> joueur::chercher_couleur(string coul)
             vect.push_back(i+1);
     return vect;
 }
-vector<int> joueur::chercher_symbole(string sym)
+vector<int> joueur::chercher_symbole(string sym)//retourne un vecteur qui contient les positions des cartes ayant le même symbole
 {
     vector<int> vect;
     for(int i=0;i<v.size();i++)
@@ -1643,8 +1643,8 @@ vector<int> joueur::chercher_symbole(string sym)
 bool joueur::jeter(UNO& u,int indice,joueur& j)
 {
     bool test=false;
-    int n=u.vjeter.size();
-    if(v[indice-1].donner_symbole()=="joker")
+    int n=u.vjeter.size();//taille de vjeteé (les cartes jetées)
+    if(v[indice-1].donner_symbole()=="joker")//si la carte qu'il veut jeter, est joker le joueur choisit une couleur
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -1652,36 +1652,36 @@ bool joueur::jeter(UNO& u,int indice,joueur& j)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.vjeter.push_back(v[indice-1]);
-        v.erase(v.begin()+indice-1);
-        u.vjeter[n].modifier_couleur(coul);
-        test=true;
+        u.vjeter.push_back(v[indice-1]);//ajouter cette carte avec les cartes jetées
+        v.erase(v.begin()+indice-1);//supprimer cette carte de cartes de joueur(v)
+        u.vjeter[n].modifier_couleur(coul);//modifier la couleur de carte
+        test=true;//il a joué
     }
-    else if(v[indice-1].donner_symbole()=="+4")
-    {
+    else if(v[indice-1].donner_symbole()=="+4")//si la carte qu'il veut jeter, est +4
+    {//il faut verifié qu'il n'a aucun choix(ni carte de meme couleur ni de méme symbole)
         if(((chercher_couleur(u.vjeter[n-1].donner_couleur()).size()==0)&&(chercher_symbole(u.vjeter[n-1].donner_symbole()).size()==0)&&(chercher_symbole("joker").size()==0))||((u.vjeter[n-1].donner_symbole()=="+4")&&(chercher_couleur(u.vjeter[n-1].donner_couleur()).size()==0)&&(chercher_symbole("joker").size()==0)))
         {
             string coul;
             while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
             {
-                cout<<"Donner le couleur a modifier : ";
+                cout<<"Donner le couleur a modifier : ";//choisir une couleur
                 cin>>coul;
             }
-            u.vjeter.push_back(v[indice-1]);
-            v.erase(v.begin()+indice-1);
-            u.vjeter[n].modifier_couleur(coul);
-            j.piocher(u,4);
-            test=true;
+            u.vjeter.push_back(v[indice-1]);//ajouter cette carte avec les cartes jetées
+            v.erase(v.begin()+indice-1);//supprimer cette carte de cartes de joueur(v)
+            u.vjeter[n].modifier_couleur(coul);//modifier la couleur de carte
+            j.piocher(u,4);//le joueur suivant pioche quatres cartes
+            test=true;//il a joué
         }
     }
     else if ((u.vjeter[n-1].donner_couleur()==v[indice-1].donner_couleur())||(u.vjeter[n-1].donner_symbole()==v[indice-1].donner_symbole()))
-    {
-        u.vjeter.push_back(v[indice-1]);
-        v.erase(v.begin()+indice-1);
-        test=true;
+    {//il a choisi une carte normale de meme couleur ou de meme symbole
+        u.vjeter.push_back(v[indice-1]);//ajouter cette carte avec les cartes jetées
+        v.erase(v.begin()+indice-1);//supprimer cette carte de cartes de joueur(v)
+        test=true;//il a joué
     }
     if((u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")&&(test==true))
-        j.piocher(u,2);
+        j.piocher(u,2);//le joueur suivant pioche +2
     return test;
 }
 int joueur::calcule_score()
@@ -1695,10 +1695,10 @@ vector<bool> joueur::joueur_automatique(UNO& u,joueur& j)
     vector<int> vcoul=chercher_couleur(u.vjeter[u.vjeter.size()-1].donner_couleur());
     vector<int> vsym=chercher_symbole(u.vjeter[u.vjeter.size()-1].donner_symbole());
     vector<bool> v1;
-    v1.push_back(false);
-    v1.push_back(false);
+    v1.push_back(false);//initialisation
+    v1.push_back(false);//initialisation
     bool test=false;
-    int n=u.vjeter.size();
+    int n=u.vjeter.size();//nombre des cartes jetées
     if(vcoul.size()!=0)
         jeter(u,vcoul[rand()%(vcoul.size())],j);
     else if(vsym.size()!=0)
@@ -1718,22 +1718,23 @@ vector<bool> joueur::joueur_automatique(UNO& u,joueur& j)
     else
     {
         piocher(u,1);
-        v1[1]=true;
+        v1[1]=true;//il a pioché
         if((v[v.size()-1].donner_couleur()==u.vjeter[u.vjeter.size()-1].donner_couleur())||(v[v.size()-1].donner_symbole()==u.vjeter[u.vjeter.size()-1].donner_symbole())||(v[v.size()-1].donner_couleur()=="noir"))
         {
             u.vjeter.push_back(v[v.size()-1]);
             v.erase(v.begin()+v.size()-1);
         }
     }
-    if(u.vjeter.size()==n+1)
+    if(u.vjeter.size()==n+1)//le nombre des cartes jetées a augmenté par 1 c-à-d il a joué
     {
-        v1[0]=true;
+        v1[0]=true;//il a jeté une carte
         if((u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")||(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4"))
-        {
-            int a=chercher_couleur("rouge").size();
-            int b=chercher_couleur("bleu").size();
-            int c=chercher_couleur("jaune").size();
-            int d=chercher_couleur("vert").size();
+        {   //si cette carte est joker ou +4 il va choisir la couleur
+            //le choix de couleur va depondre du :
+            int a=chercher_couleur("rouge").size();//nombres des cartes ayant la couleur rouge
+            int b=chercher_couleur("bleu").size();//nombres des cartes ayant la couleur bleu
+            int c=chercher_couleur("jaune").size();//nombres des cartes ayant la couleur jaune
+            int d=chercher_couleur("vert").size();//nombres des cartes ayant la couleur vert
             int liste[]={a,b,c,d};
             if(*(max_element(liste,liste+4))==a)
                 u.vjeter[u.vjeter.size()-1].modifier_couleur("rouge");
@@ -1745,11 +1746,11 @@ vector<bool> joueur::joueur_automatique(UNO& u,joueur& j)
                 u.vjeter[u.vjeter.size()-1].modifier_couleur("vert");
         }
         if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")
-            j.piocher(u,4);
+            j.piocher(u,4); //l'autre joueur pioche 4 cartes
     }
-    return(v1);
+    return(v1);//retourne un vecteur qui contient deux paramètres indique s'il a pioché et s'il a jeté une carte
 }
-vector<carte> joueur::jouer(UNO& u,joueur& j1,joueur& j2,joueur& j3,int i,int nbr,int nm)
+vector<carte> joueur::jouer(UNO& u,joueur& j1,joueur& j2,joueur& j3,int i,int nbr,int nm)//utiliser dans l'option 3 , 4 et 5
 {
     string ch;
     int n;
@@ -1773,16 +1774,16 @@ vector<carte> joueur::jouer(UNO& u,joueur& j1,joueur& j2,joueur& j3,int i,int nb
         t1=false;
         affiche(u,j1,j2,j3);
         if((chercher_couleur(u.derniere_carte().donner_couleur()).size()==0)&&(chercher_symbole(u.derniere_carte().donner_symbole()).size()==0)&&(chercher_couleur("noir").size()==0))
-        {
-            piocher(u,1);
+        {//il n'a aucune carte à jouer
+            piocher(u,1);//il va pioché puisque il n'a aucune carte à jouer
             cout<<"Vous avez piocher cette carte : ("<<v[v.size()-1].donner_couleur()<<","<<v[v.size()-1].donner_symbole()<<")"<<endl;
             t=jeter(u,nbr_de_cartes(),j1);
-            if(t==true)
+            if(t==true)// il a jeté la carte piochée
             {
                 v1.push_back(u.derniere_carte());
                 vj[0]->enregistrer_partie_a_quatre(u,*vj[1],*vj[2],*vj[3],i,bloque(u),inverse(u),false,nbr,nm);
             }
-            else
+            else//il n'a pas jeté la carte
                 vj[0]->enregistrer_partie_a_quatre(u,*vj[1],*vj[2],*vj[3],i,false,false,false,nbr,nm);
             verif_uno(u);
             t1=true;
@@ -1793,17 +1794,17 @@ vector<carte> joueur::jouer(UNO& u,joueur& j1,joueur& j2,joueur& j3,int i,int nb
             }
             while((ch!="fin")&&(ch!="FIN"));
         }
-        else
+        else//s'il a la possibilité de jouer
         {
             do
             {
-                do
+                do//il choisit de piocher ou jeter
                 {
                     cout<<"Voulez-vous jeter ou piocher une carte :";
                     cin>>ch;
                 }
                 while((ch!="jeter")&&(ch!="piocher")&&(ch!="JETER")&&(ch!="PIOCHER"));
-                if((ch=="jeter")||(ch=="JETER"))
+                if((ch=="jeter")||(ch=="JETER"))//s'il choisit de jeter
                 {
                     do
                     {
@@ -1816,12 +1817,12 @@ vector<carte> joueur::jouer(UNO& u,joueur& j1,joueur& j2,joueur& j3,int i,int nb
                         v1.push_back(u.derniere_carte());
                     verif_uno(u);
                 }
-                else if((ch=="piocher")||(ch=="PIOCHER"))
+                else if((ch=="piocher")||(ch=="PIOCHER"))//s'il choisit de piocher
                 {
                     piocher(u,1);
                     cout<<"Vous avez piocher cette carte : ("<<v[v.size()-1].donner_couleur()<<","<<v[v.size()-1].donner_symbole()<<")"<<endl;
                     t=jeter(u,nbr_de_cartes(),j1);
-                    if(t==true)
+                    if(t==true)// il a jeté la carte piochée
                     {
                         v1.push_back(u.derniere_carte());
                         vj[0]->enregistrer_partie_a_quatre(u,*vj[1],*vj[2],*vj[3],i,bloque(u),inverse(u),false,nbr,nm);
@@ -1843,13 +1844,13 @@ vector<carte> joueur::jouer(UNO& u,joueur& j1,joueur& j2,joueur& j3,int i,int nb
         if(u.fin_de_cartes()==true)
             u.nouvelle_tour();
         system("cls");
-    return(v1);
+    return(v1);//retourne les cartes jetées par le joueur
 }
 joueur::~joueur()
 {
     //dtor
 }
-ostream& operator<<(ostream& s,joueur& j)
+ostream& operator<<(ostream& s,joueur& j)//surcharge de l'operateur << pour l'enregistrement d'objet par la suite
 {
     s<<j.score<<" "<<j.v.size()<<" ";
     for(int i=0;i<j.v.size();i++)
@@ -2007,11 +2008,11 @@ void joueur::enregistrer_partie_a_deux(UNO u,joueur j,int i,int nbr,int n,vector
     ofstream fich("f2.txt",ios::binary);
     fich<<v1;
     fich<<v2;
-    fich<<nbr;
+    fich<<nbr;//nombre de partie
     fich<<" ";
-    fich<<n;
+    fich<<n;//numero de l'option
     fich<<" ";
-    fich<<i;
+    fich<<i;//indication sur le joueur qui va jouer
     fich<<" ";
     fich<<u;
     fich<<*this;
@@ -2021,17 +2022,17 @@ void joueur::enregistrer_partie_a_deux(UNO u,joueur j,int i,int nbr,int n,vector
 void joueur::enregistrer_partie_a_quatre(UNO u,joueur j1,joueur j2,joueur j3,int i,bool bloquee,bool inversee,bool test,int nbr,int n)
 {
     ofstream fich("f4.txt",ios::binary);
-    fich<<bloquee;
+    fich<<bloquee;//dernier etat du jeu
     fich<<" ";
-    fich<<inversee;
+    fich<<inversee;//dernier etat du jeu
     fich<<" ";
-    fich<<test;
+    fich<<test;//dernier etat du jeu
     fich<<" ";
-    fich<<i;
+    fich<<i;//indication sur le joueur qui va jouer
     fich<<" ";
-    fich<<nbr;
+    fich<<nbr;//nombre de partie
     fich<<" ";
-    fich<<n;
+    fich<<n;//numero de l'option
     fich<<" ";
     fich<<u;
     fich<<*this;
