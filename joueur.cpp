@@ -589,7 +589,7 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
             else//reprendre la derniere partie
             {
                 i=v2[0];//position du joueur qui a joué
-                testb=v2[1];//le derniere etat bloqué ou non
+                testb=v2[1];//si la derniere carte +2,+4 ou block
                 testi=v2[2];//sens du jeu direct ou non
                 test=v2[3];//voir dans quelle boucle il a quitté
                 nbr=v2[4];//nombre de partie pour non pas confondre la reprise du jeu par une nouvelle partie
