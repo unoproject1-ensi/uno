@@ -1379,7 +1379,7 @@ void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                 system("cls");
                 i--;
             }
-            else
+            else//le joueur est bloqué
             {
                 enregistrer_partie_a_quatre(u,j1,j2,j3,i,false,inversee,true,nbr,5);
                 do
@@ -1411,6 +1411,7 @@ void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             else
                 i=i+2;
     }
+    //la resultat du partie
     if((nbr_de_cartes()==0)||(j2.nbr_de_cartes()==0))
         cout<<"L'equipe 1 a gagne"<<endl;
     if((j1.nbr_de_cartes()==0)||(j3.nbr_de_cartes()==0))
@@ -1433,37 +1434,37 @@ void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
 void joueur::verif_uno(UNO& u)
 {
     char c;
-    if(nbr_de_cartes()==1)
+    if(nbr_de_cartes()==1)//si le nombre de carte de joueur égale 1
     {
-        auto start=chrono::steady_clock::now();
+        auto start=chrono::steady_clock::now();//déclencher le chronomètre
         chrono::duration<double> d;
         do
         {
             cout<<"Crier uno"<<endl;
             cin>>c;
-            auto end=chrono::steady_clock::now();
+            auto end=chrono::steady_clock::now();//arreter le chorno dés qu'il tape u ou U
             d=end-start;
         }
         while((c!=toupper('u'))&&(c!='u')&&(d.count()<3));
-        if(d.count()>3)
+        if(d.count()>3)//s'il dépasse 3 secondes il va piocher deux cartes
             piocher(u,2);
     }
 }
-bool joueur::inverse(UNO u)
+bool joueur::inverse(UNO u)//:indiquer si la dernière carte jetée est de type inverse ou non
 {
     if(u.derniere_carte().donner_symbole()=="inverse")
         return(true);
     else
         return(false);
 }
-bool joueur::bloque(UNO u)
+bool joueur::bloque(UNO u)//indique si la dernière carte jeté est de type block,+4 ou+2 puisque dans ces cas le joueur va passer son tour d'autre terme bloqué.
 {
     if((u.derniere_carte().donner_symbole()=="+4")||(u.derniere_carte().donner_symbole()=="+2")||(u.derniere_carte().donner_symbole()=="block"))
         return(true);
     else
         return(false);
 }
-int joueur::nbr_de_cartes()
+int joueur::nbr_de_cartes()//retourne le nombre de carte du joueur
 {
     return(v.size());
 }
@@ -1528,16 +1529,16 @@ carte joueur::distribuer_a_deux(UNO& u,joueur& j)
         v.clear();
     if(j.v.size()!=0)
         j.v.clear();
-    j.piocher(u,7);
-    piocher(u,7);
+    j.piocher(u,7);//distribuer 7 cartes à l'autre joueur
+    piocher(u,7);//prend 7 cartes
     srand(time(0));
     r=rand()%(u.vuno.size());
-    u.vjeter.push_back(u.vuno[r]);
+    u.vjeter.push_back(u.vuno[r]);//jeter la 1ere carte
     c=u.vuno[r];
-    u.vuno.erase(u.vuno.begin()+r);
+    u.vuno.erase(u.vuno.begin()+r);//supprimer cette carte du vuno (la pioche)
     cout<<"\t\t\t\t\tLe joueur 1 est en train de jouer"<<endl<<endl<<endl;
     affiche(u,j);
-    if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")
+    if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")//si la premiere carte est joker, le 1ere joueur va choisir la couleur
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -1545,9 +1546,9 @@ carte joueur::distribuer_a_deux(UNO& u,joueur& j)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);
+        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);//modifier la couleur du carte selon son choix
     }
-    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")
+    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")//si la premiere carte est +4 le, 1ere joueur va choisir la couleur
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -1555,11 +1556,11 @@ carte joueur::distribuer_a_deux(UNO& u,joueur& j)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);
-        j.piocher(u,4);
+        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);//modifier la couleur du carte
+        j.piocher(u,4);//le joueur suivant pioche les quatre cartes
     }
     else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")
-        j.piocher(u,2);
+        j.piocher(u,2);//le joueur suivant pioche deux cartes
     return c;
 }
 carte joueur::distribuer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3)
@@ -1574,18 +1575,18 @@ carte joueur::distribuer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3)
         j2.v.clear();
     if(j3.v.size()!=0)
         j3.v.clear();
-    j1.piocher(u,7);
+    j1.piocher(u,7);//distribuer à chaqune joueur 7 cartes
     j2.piocher(u,7);
     j3.piocher(u,7);
-    piocher(u,7);
+    piocher(u,7);//prend 7 cartes
     srand(time(0));
     r=rand()%(u.vuno.size());
-    u.vjeter.push_back(u.vuno[r]);
+    u.vjeter.push_back(u.vuno[r]);//jeter la 1ere carte
     c=u.vuno[r];
-    u.vuno.erase(u.vuno.begin()+r);
+    u.vuno.erase(u.vuno.begin()+r);//supprimer la 1ere carte jetée
     cout<<"\t\t\t\t\tLe joueur 1 est en train de jouer"<<endl<<endl<<endl;
     affiche(u,j1,j2,j3);
-    if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")
+    if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="joker")//si la premiere carte est joker, le 1ere joueur va choisir la couleur
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
@@ -1593,9 +1594,9 @@ carte joueur::distribuer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3)
             cout<<"Donner le couleur a modifier : ";
             cin>>coul;
         }
-        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);
+        u.vjeter[u.vjeter.size()-1].modifier_couleur(coul);//modifier la carte selon la couleur choisie
     }
-    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")
+    else if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+4")//si la premiere carte est +4 ,le 1ere joueur va choisir la couleur
     {
         string coul;
         while((coul!="jaune")&&(coul!="JAUNE")&&(coul!="rouge")&&(coul!="ROUGE")&&(coul!="vert")&&(coul!="VERT")&&(coul!="bleu")&&(coul!="BLEU"))
