@@ -445,7 +445,7 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int& nbr)
                     v3=piocher(u,1);//il va pioché puisque il n'a aucune carte à jouée
                     cout<<"Vous avez piocher cette carte : ("<<v3[v3.size()-1].donner_couleur()<<","<<v3[v3.size()-1].donner_symbole()<<")"<<endl;
                     t=jeter(u,nbr_de_cartes(),j);
-                    if(t==true)//il a jetté une carte
+                    if(t==true)//il a jeté une carte
                     {
                         //on a utilisé vector car il peut jouer plusieurs fois à la file(cas du bloc inverse ou +4  ces cartes vont d'être afficher par la suite au joueur suivant
                         v1.push_back(u.derniere_carte());
@@ -560,10 +560,10 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
     ifstream fich("f4.txt");
     if(fich.fail())// il n'y a pas une ancienne partie
     {
-        u.nouvelle_partie();
-        c=distribuer_a_quatre(u,j1,j2,j3);
+        u.nouvelle_partie();//lancer une nouvelle partie
+        c=distribuer_a_quatre(u,j1,j2,j3);//Distribution des cartes au debut
         i=1;
-        enregistrer_partie_a_quatre(u,j1,j2,j3,0,bloque(u),inverse(u),inverse(u),nbr,3);
+        enregistrer_partie_a_quatre(u,j1,j2,j3,0,bloque(u),inverse(u),inverse(u),nbr,3);//enregistrer
     }
     else//en cas ou il y a une partie non terminée
     {
@@ -578,29 +578,29 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
             }
             while((ch!="oui")&&(ch!="non")&&(ch!="OUI")&&(ch!="NON"));
             system("cls");
-            if((ch=="non")||(ch=="NON"))
+            if((ch=="non")||(ch=="NON"))//commencer une nouvelle partie
             {
-                remove("f4.txt");
-                u.nouvelle_partie();
+                remove("f4.txt");//supprimer les données de l'ancienne partie
+                u.nouvelle_partie();//lancer une nouvelle partie
                 c=distribuer_a_quatre(u,j1,j2,j3);
                 i=1;
                 enregistrer_partie_a_quatre(u,j1,j2,j3,0,bloque(u),inverse(u),inverse(u),nbr,3);
             }
-            else
+            else//reprendre la derniere partie
             {
-                i=v2[0];
-                testb=v2[1];
-                testi=v2[2];
-                test=v2[3];
-                nbr=v2[4];
+                i=v2[0];//position du joueur qui a joué
+                testb=v2[1];//le derniere etat bloqué ou non
+                testi=v2[2];//sens du jeu direct ou non
+                test=v2[3];//voir dans quelle boucle il a quitté
+                nbr=v2[4];//nombre de partie pour non pas confondre la reprise du jeu par une nouvelle partie
                 c=u.derniere_carte();
-                reprendre=true;
+                reprendre=true;//indication de la reprise
             }
         }
-        else
+        else// la partie enregistrée ne correspond pas à son choix d'option(option 3)
         {
-            remove("f4.txt");
-            u.nouvelle_partie();
+            remove("f4.txt");// supprimer les anciennes données
+            u.nouvelle_partie();//lancer une nouvelle partie
             c=distribuer_a_quatre(u,j1,j2,j3);
             i=1;
             enregistrer_partie_a_quatre(u,j1,j2,j3,0,bloque(u),inverse(u),inverse(u),nbr,3);
@@ -615,7 +615,7 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
     inversee=inverse(u);
     bloquee=bloque(u);
     if(reprendre==true)
-    {
+    {//reprendre l'état du jeu avant de quitter
         bloquee=testb;
         inversee=testi;
     }
@@ -623,7 +623,7 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
     {
         string ch;
         if((debut==true)&&(!fich.fail())&&((ch=="oui")||(ch=="OUI")))
-        {
+        {//afficher la derniere carte jeté de l'ancienne partie
             cout<<"La derniere carte joue est : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
             do
             {
@@ -634,7 +634,7 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
             system("cls");
         }
         else if(((debut==true)&&(!fich.fail())&&((ch=="non")||(ch=="NON")))||(debut==true))
-        {
+        {//afficher la 1ere carte du jeu
             cout<<"La premiere carte joue est : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
             do
             {
@@ -646,21 +646,23 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
         }
         debut=false;
         while((inversee==false)&&(i<4)&&(nbr_de_cartes()!=0)&&(j1.nbr_de_cartes()!=0)&&(j2.nbr_de_cartes()!=0)&&(j3.nbr_de_cartes()!=0))
-        {
+        {//1ere cas le jeu est dans le sens direct
             if(reprendre==true)
-                i=(i+1)%4;
+                i=(i+1)%4;//pour passer au joueur qui va jouer aprés la reprise
             if((bloquee==false))
             {
-                if((i==0)||(i==2))
+                if((i==0)||(i==2))//les joueurs normaux
                 {
                     cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
-                    int n=vj[i]->v.size();
+                    int n=vj[i]->v.size();//nombre des cartes du joueur
+                    //on commence à enregistrer avant qu'il joue on cas ou il va quitter
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i-1,false,inversee,false,nbr,3);
                     v1=vj[i]->jouer(u,*vj[(i+1)%4],*vj[(i+2)%4],*vj[(i+3)%4],i,nbr,3);
-                    if((bloque(u)==true)&&(v1.size()!=0))
+                    if((bloque(u)==true)&&(v1.size()!=0))//changer l'etat aprés le tour du joueur
                         bloquee=true;
-                    if((v1.size()!=0)&&(inverse(u)==true))
+                    if((v1.size()!=0)&&(inverse(u)==true))//changer le sens du jeu aprés le tour du joueur
                         inversee=true;
+                    //sauvegarder les données aprés son tour
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i,bloquee,inversee,true,nbr,3);
                     if((vj[i]->v.size()==n)||(vj[i]->v.size()==n+1))
                         cout<<"Le joueur "<<i+1<<" a pioche une carte"<<endl;
@@ -673,9 +675,9 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
                     }
                     while((ch!="daccord")&&(ch!="DACCORD"));
                     system("cls");
-                    i++;
+                    i++;// passer au joueur suivant
                 }
-                else
+                else//les joueurs automatiques 
                 {
                     cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i-1,false,inversee,false,nbr,3);
@@ -696,12 +698,12 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
                     }
                     while((ch!="daccord")&&(ch!="DACCORD"));
                     system("cls");
-                    i++;
+                    i++;// passer au joueur suivant
                 }
             }
-            else
+            else // cas du bloque
             {
-                  if((i==0)||(i==2))
+                  if((i==0)||(i==2)) // pour les joueurs normaux
                   {
                       enregistrer_partie_a_quatre(u,j1,j2,j3,i,false,inversee,false,nbr,3);
                       cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
@@ -721,9 +723,9 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
                       }
                       while((ch!="daccord")&&(ch!="DACCORD"));
                       system("cls");
-                      i++;
+                      i++;// passer au joueur suivant
                   }
-                  else
+                  else//joueurs automatiques
                   {
                        enregistrer_partie_a_quatre(u,j1,j2,j3,i,false,inversee,false,nbr,3);
                        cout<<"Le joueur "<<i+1<<" est bloquee"<<endl;
@@ -735,12 +737,12 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
                        while((ch!="daccord")&&(ch!="DACCORD"));
                        bloquee=false;
                        system("cls");
-                       i++;
+                       i++;// passer au joueur suivant
                   }
 
             }
             if(i==4)
-                i=0;
+                i=0;//revenir au debut
             reprendre=false;
             test=true;
         }
@@ -753,23 +755,24 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
                 i=i-2;
         reprendre=false;
         while((inversee==true)&&(i>=0)&&(nbr_de_cartes()!=0)&&(j1.nbr_de_cartes()!=0)&&(j2.nbr_de_cartes()!=0)&&(j3.nbr_de_cartes()!=0))
-        {
-            if((bloquee==false))
+        {//2eme cas le jeu est dans le sens inverse
+            if((bloquee==false))//il n'y a pas un bloque
             {
-                if((i==0)||(i==2))
+                if((i==0)||(i==2))//joueurs normaux
                 {
                     cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
-                    int n=vj[i]->v.size();
+                    int n=vj[i]->v.size();//nombre des cartes du joueur
+                    //on commence à enregistrer avant qu'il joue on cas ou il va quitter
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i-1,false,inversee,false,nbr,3);
                     v1=vj[i]->jouer(u,*vj[(i+3)%4],*vj[(i+2)%4],*vj[(i+1)%4],i,nbr,3);
-                    if((bloque(u)==true)&&(v1.size()!=0))
+                    if((bloque(u)==true)&&(v1.size()!=0))//changer l'etat du jeu
                         bloquee=true;
                     if((inverse(u)==true)&&(v1.size()!=0))
                         inversee=false;
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i,bloquee,inversee,true,nbr,3);
                     if((vj[i]->v.size()==n)||(vj[i]->v.size()==n+1))
                         cout<<"Le joueur "<<i+1<<" a pioche une carte"<<endl;
-                    if(v1.size()!=0)
+                    if(v1.size()!=0)//v1 contient la carte jouée(jeté)
                         cout<<"Le joueur "<<i+1<<" a joue cette carte : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
                     do
                     {
@@ -781,7 +784,7 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
                     i--;
                 }
 
-                else
+                else//joueurs automatique
                 {
                     cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i-1,false,inversee,false,nbr,3);
@@ -854,6 +857,7 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
             else
                 i=i+2;
     }
+    //afficher la resultat
     if((nbr_de_cartes()==0)||(j2.nbr_de_cartes()==0))
         cout<<"Votre equipe a gagne"<<endl;
     if((j1.nbr_de_cartes()==0)||(j3.nbr_de_cartes()==0))
@@ -884,7 +888,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
     ifstream fich("f4.txt");
     if(fich.fail())// il n'y a pas une ancienne partie
     {
-        u.nouvelle_partie();
+        u.nouvelle_partie();//lancer une nouvelle partie
         c=distribuer_a_quatre(u,j1,j2,j3);
         i=1;
         enregistrer_partie_a_quatre(u,j1,j2,j3,0,bloque(u),inverse(u),inverse(u),nbr,4);
@@ -902,29 +906,29 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             }
             while((ch!="oui")&&(ch!="non")&&(ch!="OUI")&&(ch!="NON"));
             system("cls");
-            if((ch=="non")||(ch=="NON"))
+            if((ch=="non")||(ch=="NON"))//commencer une nouvelle partie
             {
-                remove("f4.txt");
-                u.nouvelle_partie();
+                remove("f4.txt");//supprimer les données de l'ancienne partie
+                u.nouvelle_partie();//lancer une nouvelle partie
                 c=distribuer_a_quatre(u,j1,j2,j3);
                 i=1;
                 enregistrer_partie_a_quatre(u,j1,j2,j3,0,bloque(u),inverse(u),inverse(u),nbr,4);
             }
             else
             {
-                i=v2[0];
-                testb=v2[1];
-                testi=v2[2];
-                test=v2[3];
-                nbr=v2[4];
+                i=v2[0];//position du joueur qui a houé
+                testb=v2[1];//derniere carte a eté +2 +4 ou block ou non
+                testi=v2[2];//le sens du jeu direct ou inverse
+                test=v2[3];//dans quelle boucle il a quitté
+                nbr=v2[4];//nombre de partie
                 c=u.derniere_carte();
-                reprendre=true;
+                reprendre=true;//indication de la reprise
             }
         }
-        else
+        else// la partie enregistrée ne correspond pas à son choix d'option(option 4)
         {
-            remove("f4.txt");
-            u.nouvelle_partie();
+            remove("f4.txt");//supprimer les anciennes données
+            u.nouvelle_partie();//lancer une nouvelle partie
             c=distribuer_a_quatre(u,j1,j2,j3);
             i=1;
             enregistrer_partie_a_quatre(u,j1,j2,j3,0,bloque(u),inverse(u),inverse(u),nbr,4);
@@ -939,7 +943,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
     inversee=inverse(u);
     bloquee=bloque(u);
     if(reprendre==true)
-    {
+    {//reprendre l'etat du jeu avant de quitter
         bloquee=testb;
         inversee=testi;
     }
@@ -947,7 +951,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
     {
         string ch;
         if((debut==true)&&(!fich.fail())&&((ch=="oui")||(ch=="OUI")))
-        {
+        {//afficher la derniere carte jeté avant la pause
             cout<<"La derniere carte joue est : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
             do
             {
@@ -958,7 +962,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             system("cls");
         }
         else if(((debut==true)&&(!fich.fail())&&((ch=="non")||(ch=="NON")))||(debut==true))
-        {
+        {//afficher la 1ere carte jeté
             cout<<"La premiere carte joue est : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
             do
             {
@@ -970,25 +974,27 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
         }
         debut=false;
         while((inversee==false)&&(i<4)&&(nbr_de_cartes()!=0)&&(j1.nbr_de_cartes()!=0)&&(j2.nbr_de_cartes()!=0)&&(j3.nbr_de_cartes()!=0))
-        {
+        {//1ere cas le jeu est dans le sens direct
             if(reprendre==true)
-                i=(i+1)%4;
+                i=(i+1)%4;//pour passer au joueur suivant aprés la reprise
             if((bloquee==false))
             {
-                if((i==0)||(i==2)||(i==1))
+                if((i==0)||(i==2)||(i==1))//les 3 joueurs qui ne sont pas automatique
                 {
                     cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
-                    int n=vj[i]->v.size();
+                    int n=vj[i]->v.size();//nombre des cartes du joueur
+                    //on commence a enregistrer avant qu'il joue on cas ou il va quitter
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i-1,false,inversee,false,nbr,4);
                     v1=vj[i]->jouer(u,*vj[(i+1)%4],*vj[(i+2)%4],*vj[(i+3)%4],i,nbr,3);
-                    if((bloque(u)==true)&&(v1.size()!=0))
+                    if((bloque(u)==true)&&(v1.size()!=0))//changer l'etat aprés le tour du joueur
                         bloquee=true;
                     if((v1.size()!=0)&&(inverse(u)==true))
                         inversee=true;
+                    //sauvegarder les données aprés son tour
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i,bloquee,inversee,true,nbr,4);
                     if((vj[i]->v.size()==n)||(vj[i]->v.size()==n+1))
                         cout<<"Le joueur "<<i+1<<" a pioche une carte"<<endl;
-                    if(v1.size()!=0)
+                    if(v1.size()!=0)//v1 contient la carte jouée(jeté)
                         cout<<"Le joueur "<<i+1<<" a joue cette carte : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
                     do
                     {
@@ -999,7 +1005,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                     system("cls");
                     i++;
                 }
-                else
+                else //joueur automatique
                 {
                     cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i-1,false,inversee,false,nbr,4);
@@ -1023,9 +1029,9 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                     i++;
                 }
             }
-            else
+            else//cas du bloque
             {
-                  if((i==0)||(i==2)||(i==1))
+                  if((i==0)||(i==2)||(i==1)) //joueur normaux
                   {
                       enregistrer_partie_a_quatre(u,j1,j2,j3,i,false,inversee,false,nbr,4);
                       cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
@@ -1045,9 +1051,9 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                       }
                       while((ch!="daccord")&&(ch!="DACCORD"));
                       system("cls");
-                      i++;
+                      i++;// passer au joueur suivant
                   }
-                  else
+                  else//joueur automatique
                   {
                        enregistrer_partie_a_quatre(u,j1,j2,j3,i,false,inversee,false,nbr,4);
                        cout<<"Le joueur "<<i+1<<" est bloquee"<<endl;
@@ -1059,11 +1065,11 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                        while((ch!="daccord")&&(ch!="DACCORD"));
                        bloquee=false;
                        system("cls");
-                       i++;
+                       i++;// passer au joueur suivant
                   }
 
             }
-            if(i==4)
+            if(i==4)//revenir au premier joueur
                 i=0;
             reprendre=false;
             test=true;
@@ -1077,23 +1083,25 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                 i=i-2;
         reprendre=false;
         while((inversee==true)&&(i>=0)&&(nbr_de_cartes()!=0)&&(j1.nbr_de_cartes()!=0)&&(j2.nbr_de_cartes()!=0)&&(j3.nbr_de_cartes()!=0))
-        {
-            if((bloquee==false))
+        {//2eme cas le jeu est dans le sens inverse
+            if((bloquee==false))//il n'y pas un bloque
             {
-                if((i==0)||(i==2)||(i==1))
+                if((i==0)||(i==2)||(i==1)) // joueurs normaux
                 {
                     cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
                     int n=vj[i]->v.size();
+                    //on commence à enregistrer avant qu'il joue on cas ou il va quitter
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i-1,false,inversee,false,nbr,4);
                     v1=vj[i]->jouer(u,*vj[(i+3)%4],*vj[(i+2)%4],*vj[(i+1)%4],i,nbr,4);
-                    if((bloque(u)==true)&&(v1.size()!=0))
+                    if((bloque(u)==true)&&(v1.size()!=0))//changer l'etat aprés le tour du joueur
                         bloquee=true;
                     if((inverse(u)==true)&&(v1.size()!=0))
                         inversee=false;
+                    //sauvegarder les données aprés son tour
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i,bloquee,inversee,true,nbr,4);
                     if((vj[i]->v.size()==n)||(vj[i]->v.size()==n+1))
                         cout<<"Le joueur "<<i+1<<" a pioche une carte"<<endl;
-                    if(v1.size()!=0)
+                    if(v1.size()!=0)//v1 contient la carte jouée(jeté)
                         cout<<"Le joueur "<<i+1<<" a joue cette carte : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
                     do
                     {
@@ -1104,12 +1112,12 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                     system("cls");
                     i--;
                 }
-                else
+                else//joueur automatique
                 {
                     cout<<"\t\t\t\t\tLe joueur "<<i+1<<" est en train de jouer"<<endl<<endl<<endl;
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i-1,false,inversee,false,nbr,4);
                     vb=vj[i]->joueur_automatique(u,*vj[(i+3)%4]);
-                    if((bloque(u)==true)&&(vb[0]==true))
+                    if((bloque(u)==true)&&(vb[0]==true))//changer l'etat aprés le tour du joueur
                         bloquee=true;
                     if((inverse(u)==true)&&(vb[0]==true))
                         inversee=false;
@@ -1128,7 +1136,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                     i--;
                 }
             }
-            else
+            else//cas du bloque
             {
                 if((i==0)||(i==2)||(i==1))
                 {
@@ -1152,7 +1160,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
                     system("cls");
                     i--;
                 }
-                else
+                else//joueur automatique
                 {
                     enregistrer_partie_a_quatre(u,j1,j2,j3,i,false,inversee,true,nbr,4);
                     cout<<"Le joueur "<<i+1<<" est bloquee"<<endl;
@@ -1177,6 +1185,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             else
                 i=i+2;
     }
+    //la resultat du partie
     if((nbr_de_cartes()==0)||(j2.nbr_de_cartes()==0))
         cout<<"L'equipe 1 a gagne"<<endl;
     if((j1.nbr_de_cartes()==0)||(j3.nbr_de_cartes()==0))
