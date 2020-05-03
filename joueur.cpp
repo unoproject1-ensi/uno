@@ -18,58 +18,61 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
     string ch;
     vector<carte> v1,v2;
     ifstream fich("f2.txt");
-    if(fich.fail())
+    if(fich.fail())// il n'y a pas une ancienne partie
     {
-        u.nouvelle_partie();
-        c=distribuer_a_deux(u,j);
+        u.nouvelle_partie();//on lance une nouvelle partie
+        c=distribuer_a_deux(u,j);//Distribution
         i=1;
-        enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);
+        enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);//commencer l'enregistrement
     }
-    else
+    else//en cas ou il y a une partie non terminée
     {
         vector<int> v3;
         v3=reprendre_partie_a_deux(u,j,v1,v2);
-        if(v3[2]==1)
+        if(v3[2]==1)//voir si la partie correspond à son choix d'option(option 1)
+
         {
-            do
+            do//il a le choix de commencer une nouvelle partie ou reprendre la dernière
             {
                 cout<<"voulez vous reprendre la partie oui/non"<<endl;
                 cin>>ch;
             }
             while((ch!="oui")&&(ch!="non")&&(ch!="OUI")&&(ch!="NON"));
             system("cls");
-            if((ch=="oui")||(ch=="OUI"))
+            if((ch=="oui")||(ch=="OUI"))//reprendre la partie
             {
-                i=v3[0];
-                nbr=v3[1];
+                i=v3[0];//le tour va commencer par le joueur ayant cet indice
+                nbr=v3[1];//nombre de partie
                 c=u.derniere_carte();
-                reprendre=true;
-                enregistrer_partie_a_deux(u,j,i,1,nbr,v1,v2);
+                reprendre=true;//indication de reprise
+                enregistrer_partie_a_deux(u,j,i,1,nbr,v1,v2);//commencer l'enregistrement
             }
-            else
+            else//commencer une nouvelle partie
             {
-                remove("f2.txt");
+                remove("f2.txt");//effacer les anciennes données
                 v1.clear();
                 v2.clear();
-                u.nouvelle_partie();
+                u.nouvelle_partie();//lancer une nouvelle partie
                 c=distribuer_a_deux(u,j);
                 i=1;
-                enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);
+                enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);//commencer l'enregistrement
             }
         }
-        else
+        else//la partie enregistrée ne correspond pas à son choix d'option(option 1)
         {
-            remove("f2.txt");
-            u.nouvelle_partie();
+            remove("f2.txt");//effacer les anciennes données
+            v1.clear();
+            v2.clear();
+            u.nouvelle_partie();//lancer une nouvelle partie
             c=distribuer_a_deux(u,j);
             i=1;
-            enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);
+            enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);//commencer l'enregistrement
         }
     }
-    if(reprendre==true)
+    if(reprendre==true)//cas de reprise debut prend false
        debut=false;
     system("cls");
-    while((nbr_de_cartes()!=0)&&(j.nbr_de_cartes()!=0))
+    while((nbr_de_cartes()!=0)&&(j.nbr_de_cartes()!=0))//tant qu'aucun joueur n'a terminé ses cartes
     {
         vector<carte> v3;
         t3=false;
@@ -78,36 +81,36 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
             do
             {
                 vb=j.joueur_automatique(u,*this);
-                if(vb[1]==true)
-                    nb++;
-                if(vb[0]==true)
+                if(vb[1]==true)//joueur automatique a pioché une
+                    nb++;//nombre de cartes piochées
+                if(vb[0]==true)//il a jeté une carte
                 {
-                    v2.push_back(u.derniere_carte());
-                    if((bloque(u)==true)||(inverse(u)==true))
+                    v2.push_back(u.derniere_carte());//on a utilisé vector car il peut jouer plusieurs fois à la file(cas du block inverse ou +4)ses cartes vont d'être afficher par la suite au joueur suivant.
+                    if((bloque(u)==true)||(inverse(u)==true))//enregistrer le nouveau etat du jeu
                         enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);
                     else
                         enregistrer_partie_a_deux(u,j,0,1,nbr,v1,v2);
                 }
                 else
                     enregistrer_partie_a_deux(u,j,0,1,nbr,v1,v2);
-                if(u.fin_de_cartes()==true)
+                if(u.fin_de_cartes()==true)//si les cartes à piochées sont terminées, on va remplir à nouveau vuno
                     u.nouvelle_tour();
             }
             while(((bloque(u)==true)||(inverse(u)==true))&&(vb[0]==true)&&(j.nbr_de_cartes()!=0));
-        if(j.nbr_de_cartes()!=0)
+        if(j.nbr_de_cartes()!=0)//ce n'est pas la peine de jouer si l'autre joueur a déjà fini ses cartes
         {
             do
             {
                 t1=false;
                 affiche(u,j);
-                if(debut==true)
+                if(debut==true)//debut du  partie on affiche la 1ere carte
                     cout<<"La premiere carte joue est : ("<<c.donner_couleur()<<","<<c.donner_symbole()<<")"<<endl;
-                if(nb==1)
+                if(nb==1)//nombre de cartes piochées par l'autre joueur vaut 1
                     cout<<"Le joueur 2 a pioche une carte"<<endl;
                 else if(nb!=0)
                     cout<<"Le joueur 2 a pioche "<<nb<<" cartes"<<endl;
                 nb=0;
-                if(v2.size()!=0)
+                if(v2.size()!=0)//afficher les cartes jetées par le joueur concurrent
                 {
                     cout<<"Le joueur 2 a joue : ";
                     for(int i=0;i<v2.size();i++)
@@ -118,70 +121,70 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
                 else
                     cout<<"Le joueur 2 n'a joue aucune carte"<<endl;
                 if((chercher_couleur(u.derniere_carte().donner_couleur()).size()==0)&&(chercher_symbole(u.derniere_carte().donner_symbole()).size()==0)&&(chercher_couleur("noir").size()==0))
-                {
-                    v3=piocher(u,1);
+                {//il n'a aucune carte à jouer
+                    v3=piocher(u,1);//il va pioché puisqu'il n'a aucune carte à jouer
                     cout<<"Vous avez piocher cette carte : ("<<v3[v3.size()-1].donner_couleur()<<","<<v3[v3.size()-1].donner_symbole()<<")"<<endl;
                     t=jeter(u,nbr_de_cartes(),j);
-                    if(t==true)
-                        if((bloque(u)==true)||(inverse(u)==true))
+                    if(t==true)// il a jeté la carte piochée
+                        if((bloque(u)==true)||(inverse(u)==true))//enregistrer le nouveau etat du jeu
                             enregistrer_partie_a_deux(u,j,0,1,nbr,v1,v2);
                         else
                             enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);
                     else
                         enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);
                     verif_uno(u);
-                    t1=true;
+                    t1=true;//il a terminé son tour
                     do
                     {
                         cout<<"Ecrivez fin pour continuer a jouer"<<endl;
                         cin>>ch;
                     }
-                    while((ch!="fin")&&(ch!="FIN"));
+                    while((ch!="fin")&&(ch!="FIN"));//ecrire fin pour terminer son tour et passer au joueur suivant
                 }
-                else
+                else//s'il a la possibilité de jouer
                 {
                         do
                         {
-                            do
+                            do//il a toujours le choix de jeter ou de piocher une carte
                             {
                                 cout<<"Voulez-vous jeter ou piocher une carte :";
                                 cin>>ch;
                             }
                             while((ch!="jeter")&&(ch!="piocher"));
-                            if(ch=="jeter")
+                            if(ch=="jeter")//s'il a choisi de jeter
                             {
                                 do
                                 {
                                     cout<<"Donner un indice :";
                                     cin>>n;
                                 }
-                                while((n<1)||(n>nbr_de_cartes()));
-                                t=jeter(u,n,j);
-                                verif_uno(u);
+                                while((n<1)||(n>nbr_de_cartes()));//controle sur l'indice
+                                t=jeter(u,n,j);//jeter la carte choisie
+                                verif_uno(u);//verifier qu'il a tapper u ou U 
                             }
-                            else if(ch=="piocher")
+                            else if(ch=="piocher")//s'il a choisi de piocher
                             {
-                                v3=piocher(u,1);
+                                v3=piocher(u,1);//piocher une carte puis afficher celle-ci
                                 cout<<"Vous avez piocher cette carte : ("<<v3[v3.size()-1].donner_couleur()<<","<<v3[v3.size()-1].donner_symbole()<<")"<<endl;
                                 t=jeter(u,nbr_de_cartes(),j);
-                                if(t==true)
-                                    if((bloque(u)==true)||(inverse(u)==true))
+                                if(t==true)//il a jeté la carte piochée
+                                    if((bloque(u)==true)||(inverse(u)==true))//enregistrer le nouveau etat du jeu
                                         enregistrer_partie_a_deux(u,j,0,1,nbr,v1,v2);
                                     else
                                         enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);
                                 else
                                     enregistrer_partie_a_deux(u,j,1,1,nbr,v1,v2);
                                 verif_uno(u);
-                                t1=true;
+                                t1=true;//il a terminé son tour
                                 do
                                 {
                                     cout<<"Ecrivez fin pour continuer a jouer"<<endl;
                                     cin>>ch;
                                 }
-                                while((ch!="fin")&&(ch!="FIN"));
+                                while((ch!="fin")&&(ch!="FIN"));//ecrire fin pour terminer son tour et passer au joueur suivant
                             }
                         }
-                        while((t==false)&&(t1==false));
+                        while((t==false)&&(t1==false));//répéter jusqu'à il jette  une carte ou il termine son tour
                 }
                 if(t==true)
                     if((bloque(u)==true)||(inverse(u)==true))
@@ -199,6 +202,7 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
         }
         i=1;
     }
+    //afficher la resultat à la fin du partie
     if(nbr_de_cartes()==0)
         cout<<"Vous etes gagnant"<<endl;
     if(j.nbr_de_cartes()==0)
