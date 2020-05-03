@@ -916,8 +916,8 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             }
             else
             {
-                i=v2[0];//position du joueur qui a houé
-                testb=v2[1];//derniere carte a eté +2 +4 ou block ou non
+                i=v2[0];//position du joueur qui a joué
+                testb=v2[1];//si la derniere carte jeté +2 +4 ou block ou non
                 testi=v2[2];//le sens du jeu direct ou inverse
                 test=v2[3];//dans quelle boucle il a quitté
                 nbr=v2[4];//nombre de partie
@@ -1243,9 +1243,9 @@ void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             }
             else
             {
-                i=v2[0];//la position du joueur
-                testb=v2[1];//s'il etait boqué ou pas avant la pause(true or false)
-                testi=v2[2];//si le tour etait dans le sens inverse (true or false)
+                i=v2[0];//la position du dernier joueur
+                testb=v2[1];//si la derniere carte jeté +2,+4,ou block
+                testi=v2[2];//si le jeu etait dans le sens inverse (true or false)
                 test=v2[3];//voir dans qu'elle boucle il a quitté
                 nbr=v2[4];//nombre de partie pour non pas confondre la reprise du jeu par une nouvelle partie
                 c=u.derniere_carte();
@@ -1278,7 +1278,7 @@ void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
     {//si aucun de joueur n'a terminé ses cartes
         string ch;
         if((debut==true)&&(!fich.fail())&&((ch=="oui")||(ch=="OUI")))//affichage en cas de reprise
-        {
+        {//afficher la derniere carte jeté avant la pause
             cout<<"La derniere carte joue est : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
             do
             {
@@ -1289,7 +1289,7 @@ void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             system("cls");
         }
         else if(((debut==true)&&(!fich.fail())&&((ch=="non")||(ch=="NON")))||(debut==true))//affichage en cas d'une nouvelle partie
-        {
+        {//afficher la 1ere carte jeté
             cout<<"La premiere carte joue est : ("<<u.derniere_carte().donner_couleur()<<","<<u.derniere_carte().donner_symbole()<<")"<<endl;
             do
             {
