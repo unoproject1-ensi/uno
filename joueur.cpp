@@ -218,8 +218,8 @@ void joueur::jouer_contre_la_machine(UNO& u,joueur& j,int nbr)
             cin>>ch;
         }
         while((ch!="continuer")&&(ch!="CONTINUER"));
+        system("cls");
     }
-    system("cls");
 }
 void joueur::jouer_a_deux(UNO& u,joueur& j,int& nbr)
 {
@@ -546,8 +546,8 @@ void joueur::jouer_a_deux(UNO& u,joueur& j,int& nbr)
             cin>>ch;
         }
         while((ch!="continuer")&&(ch!="CONTINUER"));
+        system("cls");
     }
-    system("cls");
 }
 void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
 {
@@ -875,6 +875,7 @@ void joueur::jouer_a_deux_contre_la_machine(UNO& u,joueur& j1,joueur& j2,joueur&
             cin>>ch;
         }
         while((ch!="continuer")&&(ch!="CONTINUER"));
+        system("cls");
     }
 }
 void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
@@ -1203,6 +1204,7 @@ void joueur::jouer_a_trois(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             cin>>ch;
         }
         while((ch!="continuer")&&(ch!="CONTINUER"));
+        system("cls");
     }
 }
 void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
@@ -1441,6 +1443,7 @@ void joueur::jouer_a_quatre(UNO& u,joueur& j1,joueur& j2,joueur& j3,int& nbr)
             cin>>ch;
         }
         while((ch!="continuer")&&(ch!="CONTINUER"));
+        system("cls");
     }
 }
 void joueur::verif_uno(UNO& u)
