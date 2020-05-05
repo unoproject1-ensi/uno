@@ -1736,6 +1736,8 @@ vector<bool> joueur::joueur_automatique(UNO& u,joueur& j)
         {
             u.vjeter.push_back(v[v.size()-1]);
             v.erase(v.begin()+v.size()-1);
+            if(u.vjeter[u.vjeter.size()-1].donner_symbole()=="+2")
+                j.piocher(u,2);
         }
     }
     if(u.vjeter.size()==n+1)//le nombre des cartes jetées a augmenté par 1 c-à-d il a joué
